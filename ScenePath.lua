@@ -237,7 +237,7 @@ function _M:saveScene1Path(name, conf, upPos, dwPos, rpos, cpos)
 
 	--圆圈
 	tname = name .. "_r"
-	self:saveScene1Cycle(tname, conf.dwt, rpos)
+	self:saveScene1Cycle(tname, conf.rt, rpos)
 
 	--圆心位置
 	tname = name .. "_c"
