@@ -86,22 +86,35 @@ function _M:BuildScene1(name)
 	--处理中心的圆
 	local center = nil
 	local rpos = {}
-	for _,c in pairs(conf.cx) do
-		center = cc.p(c, conf.cy)
+	shift = {}
+	center = cc.p(conf.cx[#conf.cx], conf.cy)
+	local firstPt = {}
+	local start = cc.p(conf.cx[#conf.cx] + conf.r, conf.cy)
+	local angle = math.pi * 2 / conf.rc
+	local ptDiff = {}
+	for i = 1, conf.rc do
+		firstPt = cc.pRotateByAngle(start, center, angle * (i - 1))
 
-		local angle = math.pi * 2 / conf.rc
-		local v = {}
-		local start = cc.p(c - conf.r, conf.cy)
-		for i = 1, conf.rc do
-			v.starts = cc.pRotateByAngle(start, center, angle * (i - 1))
-			v.ends = cc.p(conf.cdx, v.starts.y)
-			v.duration = baseInterval / baseLen * (v.starts.x - conf.cdx)
-			pos = {}
-			self:buildLinear(v, pos, true)
+		ptDiff = cc.pSub(firstPt, start)
 
-			table.insert(rpos, pos)
-		end
+		table.insert(shift, ptDiff)
 	end
+	table.insert(rpos, shift)
+
+	local index = {}
+	for i =1, #conf.cx do
+		table.insert(index, math.ceil((conf.cx[#conf.cx] - conf.cx[i]) / stepLen))
+	end
+	table.insert(rpos, index)
+
+	v = {}
+	v.starts = start --cc.pRotateByAngle(start, center, angle * (i - 1))
+	v.ends = cc.p(conf.cdx, v.starts.y)
+	v.duration = baseInterval / baseLen * (v.starts.x - conf.cdx)
+	pos = {}
+	self:buildLinear(v, pos, true)
+	table.insert(rpos, pos)
+
 
 	--处理圆心的鱼
 	local cpos = {}
@@ -173,6 +186,46 @@ function _M:saveScene1Pos(tname, t, apos)
 	fh:close()	
 end
 
+function _M:saveScene1Cycle(tname, t, apos)
+	--1 偏移度量， 2 偏移索引 3 路径
+	path = self.savePathStr .. tname .. ".lua"
+	print("saveScene1Path save to ", path)
+	local fh = io.open(path, "wb")
+	fh:write(string.format("local %s = {\n", tname))
+	fh:write(string.format("\tt = %d,\n", t))
+
+	--偏移度量
+	fh:write("\ts = {\n")
+	for i = 1, #apos[1] do
+		fh:write(string.format("\t\t{x=%.2f,y=%.2f},\n", apos[1][i].x, apos[1][i].y))
+	end
+	fh:write("\t},\n")
+
+	--偏移索引
+	fh:write("\ti = {\n\t\t")
+	for i = 1, #apos[2] do
+		fh:write(string.format("%d,", apos[2][i]))
+	end
+	fh:write("\n\t},\n")
+
+	--真正路径
+	fh:write("\tp = {\n")
+
+	local angle = {}
+	local pos = apos[3]
+
+    for j=1, #pos - 1 do
+        table.insert(angle, cc.pGetAngle(cc.pSub(pos[j+1], pos[j]), cc.p(0, 1)) * 57.29577951 - 90)
+    end
+    table.insert(angle, angle[#angle])
+    for j=1, #angle do
+        fh:write(string.format("\t\t{X=%.2f,Y=%.2f,aX=%.2f},\n", pos[j].x, pos[j].y, angle[j]))
+    end
+    fh:write("\t},\n")
+	fh:write("}\n")
+    fh:write(string.format("return %s\n", tname))
+	fh:close()
+end
 
 function _M:saveScene1Path(name, conf, upPos, dwPos, rpos, cpos)
 	--上
@@ -182,34 +235,11 @@ function _M:saveScene1Path(name, conf, upPos, dwPos, rpos, cpos)
 	tname = name .. "_dw"
 	self:saveScene1Pos(tname, conf.dwt, dwPos)
 
-	--rpos
+	--圆圈
 	tname = name .. "_r"
-	path = self.savePathStr .. tname .. ".lua"
-	print("saveScene1Path savne to ", path)
-	local fh = io.open(path, "wb")
-	fh:write(string.format("local %s = {\n", tname))
-	fh:write(string.format("\tt = %d,\n", conf.rt))
-	fh:write("\tp = {\n")
-	for i=1, #rpos do
-		fh:write("\t\t{\n")
-		local angle = {}
-		local pos = rpos[i]
+	self:saveScene1Cycle(tname, conf.dwt, rpos)
 
-	    for j=1, #pos - 1 do
-	        table.insert(angle, cc.pGetAngle(cc.pSub(pos[j+1], pos[j]), cc.p(0, 1)) * 57.29577951 - 90)
-	    end
-	    table.insert(angle, angle[#angle])
-	    for j=1, #angle do
-	        fh:write(string.format("\t\t\t{X=%.2f,Y=%.2f,aX=%.2f,},\n", pos[j].x, pos[j].y, angle[j]))
-	    end
-	    fh:write("\t\t},\n")
-	end
-	fh:write("\t},\n")
-	fh:write("}\n")
-    fh:write(string.format("return %s\n", tname))
-	fh:close()
-
-	--cpos
+	--圆心位置
 	tname = name .. "_c"
 	path = self.savePathStr .. tname .. ".lua"
 	print("saveScene1Path save to ", path)
