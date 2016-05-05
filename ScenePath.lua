@@ -212,7 +212,7 @@ function _M:saveScene1Path(name, conf, upPos, dwPos, rpos, cpos)
 	--cpos
 	tname = name .. "_c"
 	path = self.savePathStr .. tname .. ".lua"
-	print("saveScene1Path savne to ", path)
+	print("saveScene1Path save to ", path)
 	local fh = io.open(path, "wb")
 	fh:write(string.format("local %s = {\n", tname))
 	fh:write(string.format("\tt = %d,\n", conf.ct))
@@ -220,7 +220,7 @@ function _M:saveScene1Path(name, conf, upPos, dwPos, rpos, cpos)
 	for i=1, #cpos do
 		fh:write("\t\t{\n")
 		local angle = {}
-		local pos = rpos[i]
+		local pos = cpos[i]
 
 	    for j=1, #pos - 1 do
 	        table.insert(angle, cc.pGetAngle(cc.pSub(pos[j+1], pos[j]), cc.p(0, 1)) * 57.29577951 - 90)
