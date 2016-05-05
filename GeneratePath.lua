@@ -175,18 +175,6 @@ function _M:buildBezier(v, pos, first)
         table.insert(pos, dpos)
         delt = delt + self.interval
     end
-
-    -- v.sct = cc.pSub(v.sct, v.starts)
-    -- v.dct = cc.pSub(v.dct, v.starts)
-
-    -- while delt < v.duration do
-    --     dpos = self:BezierBy(v.starts, v.ends, v.sct, v.dct, v.duration, delt)
-    --     table.insert(pos, dpos)
-    --     delt = delt + self.interval
-    -- end
-    --最后会有偏差，去掉ends
-    --table.remove(pos)
-    --table.insert(pos, v.ends)
 end
 
 function _M:buildCycle(v, pos, first)

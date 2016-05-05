@@ -6,6 +6,7 @@
 -- {posX=0.000000, posY=0.000000, angleX=-23.537057, angleY=-23.537057,}
 --endregion
 
+local BezierTo = require("PathBezierTo")
 
 
 local ScenePathBuilder = {}
@@ -19,7 +20,7 @@ end
 
 function _M:build()
 	self:BuildScene1("fishjoy_scenpath_1")
-
+	self:BuildScene2("fishjoy_scenpath_2")
 end
 
 --region 图形描述
@@ -267,6 +268,66 @@ function _M:saveScene1Path(name, conf, upPos, dwPos, rpos, cpos)
 	fh:close()
 end
 
+function _M:BuildScene2(name)
+	local conf = require("sceneConfig/" .. "fishjoy_scenepath_2")
+
+	--up small
+	local usPos = {}
+	local builder = BezierTo:new(conf[1].t, conf[1])
+	builder:buildBezier(conf[1], usPos, true)
+	--up big
+	ubPos = {}
+	builder = BezierTo:new(conf[2].t, conf[2])
+	builder:buildBezier(conf[2], ubPos, true)
+	--down small
+	dsPos = {}
+	builder = BezierTo:new(conf[3].t, conf[3])
+	builder:buildBezier(conf[3], dsPos, true)
+	--down big
+	dbPos = {}
+	builder = BezierTo:new(conf[4].t, conf[4])
+	builder:buildBezier(conf[4], dbPos, true)
+
+	self:saveScene2Path(conf, usPos, ubPos, dsPos, dbPos)
+end
+
+function _M:saveScene2Path(conf, usPos, ubPos, dsPos, dbPos)
+	local tname = "fishjoy_scenepath_2" .. "_us"
+	self:saveScene2Single(tname, conf[1].t, conf[5].c, conf[5].d, usPos)
+	tname = "fishjoy_scenepath_2" .. "_ub"
+	self:saveScene2Single(tname, conf[2].t, conf[5].c, conf[5].d, ubPos)
+	tname = "fishjoy_scenepath_2" .. "_ds"
+	self:saveScene2Single(tname, conf[3].t, conf[5].c, conf[5].d, dsPos)
+	tname = "fishjoy_scenepath_2" .. "_db"
+	self:saveScene2Single(tname, conf[4].t, conf[5].c, conf[5].d, dbPos)
+end
+
+function _M:saveScene2Single(tname, t, c, d, pos)
+	local path = self.savePathStr .. tname .. ".lua"
+	print("saveScene2Single save to ", path)
+
+	local fh = io.open(path, "wb")
+	fh:write(string.format("local %s = {\n", tname))
+	fh:write(string.format("\tt = %d,\n", t))
+	fh:write(string.format("\tc = %d,\n", c))
+	fh:write(string.format("\td = %d,\n", d))
+
+	fh:write("\tp = {\n")
+	local angle = {}
+
+    for j=1, #pos - 1 do
+        table.insert(angle, cc.pGetAngle(cc.pSub(pos[j+1], pos[j]), cc.p(0, 1)) * 57.29577951 - 90)
+    end
+    table.insert(angle, angle[#angle])
+    for j=1, #angle do
+        fh:write(string.format("\t\t{X=%.2f,Y=%.2f,aX=%.2f},\n", pos[j].x, pos[j].y, angle[j]))
+    end
+	fh:write("\t}\n")
+
+	fh:write("}\n")
+	fh:write(string.format("return %s\n", tname));
+	fh:close()
+end
 
 return _M
 
