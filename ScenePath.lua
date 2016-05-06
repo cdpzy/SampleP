@@ -273,19 +273,19 @@ function _M:BuildScene2(name)
 
 	--up small
 	local usPos = {}
-	local builder = BezierTo:new(conf[1].t, conf[1])
+	local builder = BezierTo:new(conf[1].duration, conf[1])
 	builder:buildBezier(conf[1], usPos, true)
 	--up big
 	ubPos = {}
-	builder = BezierTo:new(conf[2].t, conf[2])
+	builder = BezierTo:new(conf[2].duration, conf[2])
 	builder:buildBezier(conf[2], ubPos, true)
 	--down small
 	dsPos = {}
-	builder = BezierTo:new(conf[3].t, conf[3])
+	builder = BezierTo:new(conf[3].duration, conf[3])
 	builder:buildBezier(conf[3], dsPos, true)
 	--down big
 	dbPos = {}
-	builder = BezierTo:new(conf[4].t, conf[4])
+	builder = BezierTo:new(conf[4].duration, conf[4])
 	builder:buildBezier(conf[4], dbPos, true)
 
 	self:saveScene2Path(conf, usPos, ubPos, dsPos, dbPos)

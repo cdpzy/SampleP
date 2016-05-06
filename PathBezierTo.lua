@@ -55,10 +55,6 @@ function PathBezierTo:buildBezier(v, pos, first)
     local delt = self.interval
     local dpos = nil
 
-    self.ss = pos[#pos]
-    self.ps = pos[#pos]
-
-    --local bezier = BezierTo:new(v.duration,v)
     while delt < v.duration do
         dpos = self:getPoint(delt)
         table.insert(pos, dpos)
