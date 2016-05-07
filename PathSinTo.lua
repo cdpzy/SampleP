@@ -1,17 +1,61 @@
 local PathSinTo = {}
+local _M = PathSinTo
 
-function PathSinTo:new(conf)
+_M.interval = 1. / 30.
+
+function _M:new(conf)
 	local o = {}
 	o.conf = conf
 
 	self.__index = self
-	setmemtatable(o, self)
+	setmetatable(o, self)
 
 	return o
 end
 
-function PathSinTo:build(pos)
-	
+function _M:build(pos)
+	if 1 == pos.v then
+		return self:buildVertical(pos)
+	else
+		return self:buildHorizontal(pos)
+	end
 end
 
-return PathSinTo
+function _M:buildVertical(pos)
+	local len = pos.l
+	
+	local stepLen = math.abs(pos.ep - pos.sp) / pos.duration * self.interval
+	if pos.sp > pos.ep then stepLen = -stepLen end
+	local delt = 0
+	local start = 0
+	local nstart = 0
+
+	local apos = {}
+	local ps = {}
+	local pl = {}
+	for i = 1, #pos.o do
+		delt = 0
+		ps = {}
+		pl = {}
+		while math.abs(delt) < len do
+			start = pos.sp + delt
+			nstart = start / len
+			table.insert(ps, cc.p(pos.o[i][1] * math.sin(nstart), start))
+
+			table.insert(pl, cc.p(pos.o[i][1] * math.sin(nstart), start))
+
+			delt = delt + stepLen
+		end
+
+		table.insert(apos, ps)
+		table.insert(apos, pl)
+	end
+
+	return apos
+end
+
+function _M:buildHorizontal(pos)
+	print("unfinished")
+end
+
+return _M

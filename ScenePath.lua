@@ -7,7 +7,7 @@
 --endregion
 
 local BezierTo = require("PathBezierTo")
-
+local SinTo = require("PathSinTo")
 
 local ScenePathBuilder = {}
 local _M = ScenePathBuilder
@@ -21,6 +21,7 @@ end
 function _M:build()
 	self:BuildScene1("fishjoy_scenpath_1")
 	self:BuildScene2("fishjoy_scenpath_2")
+	self:BuildScene3("fishjoy_scenpath_3")
 end
 
 --region 图形描述
@@ -327,6 +328,52 @@ function _M:saveScene2Single(tname, t, c, d, pos)
 	fh:write("}\n")
 	fh:write(string.format("return %s\n", tname));
 	fh:close()
+end
+
+function _M:saveScene3Single(idx, t, d, c, pos)
+	local tname = "fishjoy_scenepath_3_" .. tostring(idx)
+	local path = self.savePathStr .. tname .. ".lua"
+	print("saveScene2Single save to ", path)
+
+	local fh = io.open(path, "wb")
+	fh:write(string.format("local %s = {\n", tname))
+	fh:write(string.format("\tt = %d,\n", t))
+	fh:write(string.format("\tc = %d,\n", c))
+	fh:write(string.format("\td = %d,\n", d))
+
+	fh:write("\tp = {\n")
+	local angle = {}
+
+    for j=1, #pos - 1 do
+        table.insert(angle, cc.pGetAngle(cc.pSub(pos[j+1], pos[j]), cc.p(0, 1)) * 57.29577951 - 90)
+    end
+    table.insert(angle, angle[#angle])
+    for j=1, #angle do
+        fh:write(string.format("\t\t{X=%.2f,Y=%.2f,aX=%.2f},\n", pos[j].x, pos[j].y, angle[j]))
+    end
+	fh:write("\t}\n")
+
+	fh:write("}\n")
+	fh:write(string.format("return %s\n", tname));
+	fh:close()
+end
+
+function _M:saveScene3Path(conf, pos)
+	for i = 1, #conf.o do
+		self:saveScene3Single(i*2 - 1, conf.t[i][1], conf.d, conf.c, pos[i * 2 - 1])
+		self:saveScene3Single(i*2, conf.t[i][2], conf.d, conf.c, pos[i * 2])
+	end
+end
+
+function _M:BuildScene3(name)
+	local conf = require("sceneConfig/" .. "fishjoy_scenepath_3")
+
+	local sinTo = SinTo:new(conf)
+
+	local pos = sinTo:buildVertical(conf)
+
+	self:saveScene3Path(conf, pos)
+
 end
 
 return _M
