@@ -6,7 +6,7 @@ local fishjoy_scenepath_3 = {
 
 	--sample config for vertical
 
-	l = 1920,    						-- 屏幕内部长度，通常h模式为w，v模式为h
+	l = 1080,    						-- 屏幕内部长度，通常h模式为w，v模式为h
 	sp = 1230,   						-- 鱼的起始位置，horizontal 为x， vertical为 y
 	ep = -150,   						-- 鱼的结束位置，horizontal 为x， vertical为 y
 

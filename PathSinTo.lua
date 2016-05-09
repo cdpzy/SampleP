@@ -33,16 +33,21 @@ function _M:buildVertical(pos)
 	local apos = {}
 	local ps = {}
 	local pl = {}
+	local dis = 0
 	for i = 1, #pos.o do
 		delt = 0
 		ps = {}
 		pl = {}
 		while math.abs(delt) < len do
 			start = pos.sp + delt
-			nstart = start / len
-			table.insert(ps, cc.p(pos.o[i][1] * math.sin(nstart), start))
 
-			table.insert(pl, cc.p(pos.o[i][1] * math.sin(nstart), start))
+			nstart = (start - pos.o[i][2]) / len * 2
+			if pos.sp > pos.ep then nstart = -nstart end
+
+			dis = math.sin(nstart * math.pi) * pos.peak
+
+			table.insert(ps, cc.p(pos.o[i][1] +  dis, start))
+			table.insert(pl, cc.p(pos.o[i][1] - dis, start))
 
 			delt = delt + stepLen
 		end
