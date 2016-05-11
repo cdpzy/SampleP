@@ -22,7 +22,7 @@ function _M:build(pos)
 end
 
 function _M:buildVertical(pos)
-	local len = pos.l
+	local len = math.abs(pos.sp - pos.ep)
 	
 	local stepLen = math.abs(pos.ep - pos.sp) / pos.duration * self.interval
 	if pos.sp > pos.ep then stepLen = -stepLen end
@@ -41,7 +41,7 @@ function _M:buildVertical(pos)
 		while math.abs(delt) < len do
 			start = pos.sp + delt
 
-			nstart = (start - pos.o[i][2]) / len * 2
+			nstart = (start - pos.o[i][2]) / pos.l * 2
 			if pos.sp > pos.ep then nstart = -nstart end
 
 			dis = math.sin(nstart * math.pi) * pos.peak
