@@ -1,4 +1,4 @@
-local fishpath_1 = {
+local fishpath_1_1 = {
 {X=-68.00,Y=328.00,aX=24.28,},
 {X=-67.07,Y=327.58,aX=23.03,},
 {X=-66.12,Y=327.18,aX=21.82,},
@@ -841,4 +841,4 @@ local fishpath_1 = {
 {X=1435.69,Y=59.00,aX=-238.48,},
 {X=1434.67,Y=57.33,aX=-238.48,},
 }
-return fishpath_1
+return fishpath_1_1
