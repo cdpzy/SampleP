@@ -99,8 +99,27 @@ _M.configs = {
     ["pathconfig/fishpath_29_1"] = {"genPoint/fishpath_29_1.lua", "fishpath_29_1"}, 
 }
 
+function _M:makeConfigs()
+    self.configs = {}
+
+    local path = lfs.currentdir() .. "/pathconfig/"
+
+    for file in lfs.dir(path) do
+        print("files is ", file)
+        if nil ~= string.find(file, ".lua") then
+            local pos = string.find(file, "%.")
+            local name = string.sub(file, 1, pos - 1)
+            print (name)
+            self.configs[string.format("pathconfig/%s", name)] = { string.format("genPoint/%s.lua", name), name}
+        end
+    end
+
+end
+
 function _M:build()
     local p = nil
+
+    self:makeConfigs()
 
     print("start processing  total ", #self.configs)
 
