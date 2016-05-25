@@ -68,35 +68,35 @@ print("working directory ", _M.savePathStr)
 
 _M.configs = {
     --[源配置文件] = {生成的配置文件, 生成的配置表名称}
-	["pathconfig/fishpath_1_1"] = {"genPoint/fishpath_1_1.lua", "fishpath_1_1"},
-    ["pathconfig/fishpath_2_1"] = {"genPoint/fishpath_2_1.lua", "fishpath_2_1"},
-    ["pathconfig/fishpath_3_1"] = {"genPoint/fishpath_3_1.lua", "fishpath_3_1"},
-    ["pathconfig/fishpath_4_1"] = {"genPoint/fishpath_4_1.lua", "fishpath_4_1"},
-    ["pathconfig/fishpath_5_1"] = {"genPoint/fishpath_5_1.lua", "fishpath_5_1"},
-    ["pathconfig/fishpath_6_1"] = {"genPoint/fishpath_6_1.lua", "fishpath_6_1"},
-    ["pathconfig/fishpath_7_1"] = {"genPoint/fishpath_7_1.lua", "fishpath_7_1"},
-    ["pathconfig/fishpath_8_1"] = {"genPoint/fishpath_8_1.lua", "fishpath_8_1"},
-    ["pathconfig/fishpath_9_1"] = {"genPoint/fishpath_9_1.lua", "fishpath_9_1"},
-    ["pathconfig/fishpath_10_1"] = {"genPoint/fishpath_10_1.lua", "fishpath_10_1"},
-    ["pathconfig/fishpath_11_1"] = {"genPoint/fishpath_11_1.lua", "fishpath_11_1"},
-    ["pathconfig/fishpath_12_1"] = {"genPoint/fishpath_12_1.lua", "fishpath_12_1"},
-    ["pathconfig/fishpath_13_1"] = {"genPoint/fishpath_13_1.lua", "fishpath_13_1"},
-    ["pathconfig/fishpath_14_1"] = {"genPoint/fishpath_14_1.lua", "fishpath_14_1"},
-    ["pathconfig/fishpath_15_1"] = {"genPoint/fishpath_15_1.lua", "fishpath_15_1"},
-    ["pathconfig/fishpath_16_1"] = {"genPoint/fishpath_16_1.lua", "fishpath_16_1"},
-    ["pathconfig/fishpath_17_1"] = {"genPoint/fishpath_17_1.lua", "fishpath_17_1"},
-    ["pathconfig/fishpath_18_1"] = {"genPoint/fishpath_18_1.lua", "fishpath_18_1"},
-    ["pathconfig/fishpath_19_1"] = {"genPoint/fishpath_19_1.lua", "fishpath_19_1"},
-    ["pathconfig/fishpath_20_1"] = {"genPoint/fishpath_20_1.lua", "fishpath_20_1"},
-    ["pathconfig/fishpath_21_1"] = {"genPoint/fishpath_21_1.lua", "fishpath_21_1"},
-    ["pathconfig/fishpath_22_1"] = {"genPoint/fishpath_22_1.lua", "fishpath_22_1"},
-    ["pathconfig/fishpath_23_1"] = {"genPoint/fishpath_23_1.lua", "fishpath_23_1"},
-    ["pathconfig/fishpath_24_1"] = {"genPoint/fishpath_24_1.lua", "fishpath_24_1"},
-    ["pathconfig/fishpath_25_1"] = {"genPoint/fishpath_25_1.lua", "fishpath_25_1"},
-    ["pathconfig/fishpath_26_1"] = {"genPoint/fishpath_26_1.lua", "fishpath_26_1"},
-    ["pathconfig/fishpath_27_1"] = {"genPoint/fishpath_27_1.lua", "fishpath_27_1"}, 
-    ["pathconfig/fishpath_28_1"] = {"genPoint/fishpath_28_1.lua", "fishpath_28_1"},
-    ["pathconfig/fishpath_29_1"] = {"genPoint/fishpath_29_1.lua", "fishpath_29_1"}, 
+	-- ["pathconfig/fishpath_1_1"] = {"genPoint/fishpath_1_1.lua", "fishpath_1_1"},
+ --    ["pathconfig/fishpath_2_1"] = {"genPoint/fishpath_2_1.lua", "fishpath_2_1"},
+ --    ["pathconfig/fishpath_3_1"] = {"genPoint/fishpath_3_1.lua", "fishpath_3_1"},
+ --    ["pathconfig/fishpath_4_1"] = {"genPoint/fishpath_4_1.lua", "fishpath_4_1"},
+ --    ["pathconfig/fishpath_5_1"] = {"genPoint/fishpath_5_1.lua", "fishpath_5_1"},
+ --    ["pathconfig/fishpath_6_1"] = {"genPoint/fishpath_6_1.lua", "fishpath_6_1"},
+ --    ["pathconfig/fishpath_7_1"] = {"genPoint/fishpath_7_1.lua", "fishpath_7_1"},
+ --    ["pathconfig/fishpath_8_1"] = {"genPoint/fishpath_8_1.lua", "fishpath_8_1"},
+ --    ["pathconfig/fishpath_9_1"] = {"genPoint/fishpath_9_1.lua", "fishpath_9_1"},
+ --    ["pathconfig/fishpath_10_1"] = {"genPoint/fishpath_10_1.lua", "fishpath_10_1"},
+ --    ["pathconfig/fishpath_11_1"] = {"genPoint/fishpath_11_1.lua", "fishpath_11_1"},
+ --    ["pathconfig/fishpath_12_1"] = {"genPoint/fishpath_12_1.lua", "fishpath_12_1"},
+ --    ["pathconfig/fishpath_13_1"] = {"genPoint/fishpath_13_1.lua", "fishpath_13_1"},
+ --    ["pathconfig/fishpath_14_1"] = {"genPoint/fishpath_14_1.lua", "fishpath_14_1"},
+ --    ["pathconfig/fishpath_15_1"] = {"genPoint/fishpath_15_1.lua", "fishpath_15_1"},
+ --    ["pathconfig/fishpath_16_1"] = {"genPoint/fishpath_16_1.lua", "fishpath_16_1"},
+ --    ["pathconfig/fishpath_17_1"] = {"genPoint/fishpath_17_1.lua", "fishpath_17_1"},
+ --    ["pathconfig/fishpath_18_1"] = {"genPoint/fishpath_18_1.lua", "fishpath_18_1"},
+ --    ["pathconfig/fishpath_19_1"] = {"genPoint/fishpath_19_1.lua", "fishpath_19_1"},
+ --    ["pathconfig/fishpath_20_1"] = {"genPoint/fishpath_20_1.lua", "fishpath_20_1"},
+ --    ["pathconfig/fishpath_21_1"] = {"genPoint/fishpath_21_1.lua", "fishpath_21_1"},
+ --    ["pathconfig/fishpath_22_1"] = {"genPoint/fishpath_22_1.lua", "fishpath_22_1"},
+ --    ["pathconfig/fishpath_23_1"] = {"genPoint/fishpath_23_1.lua", "fishpath_23_1"},
+ --    ["pathconfig/fishpath_24_1"] = {"genPoint/fishpath_24_1.lua", "fishpath_24_1"},
+ --    ["pathconfig/fishpath_25_1"] = {"genPoint/fishpath_25_1.lua", "fishpath_25_1"},
+ --    ["pathconfig/fishpath_26_1"] = {"genPoint/fishpath_26_1.lua", "fishpath_26_1"},
+ --    ["pathconfig/fishpath_27_1"] = {"genPoint/fishpath_27_1.lua", "fishpath_27_1"}, 
+ --    ["pathconfig/fishpath_28_1"] = {"genPoint/fishpath_28_1.lua", "fishpath_28_1"},
+ --    ["pathconfig/fishpath_29_1"] = {"genPoint/fishpath_29_1.lua", "fishpath_29_1"}, 
 }
 
 function _M:makeConfigs()
@@ -179,7 +179,31 @@ function _M:savePath(pos, f)
     fh:close()
 end
 
+_M.bezierStep = 100
+_M.simulateInterval = 2000
+function _M:getBezierDuraton(v, first)
+    local pos = {}
+    if first then table.insert(pos, v.starts) end
+    local bezier = BezierTo:new(self.simulateInterval,v)
+    local delt = 1
+    while delt < self.simulateInterval do
+        dpos = bezier:getPoint(delt)
+        table.insert(pos, dpos)
+        delt = delt + 1
+    end
+
+    local len = 0.
+    for i=2, #pos do
+        len = len + cc.pGetDistance(pos[i], pos [i - 1])
+    end
+
+    return len / self.bezierStep
+end
+
+
 function _M:buildBezier(v, pos, first)
+    v.duration = self:getBezierDuraton(v, first)
+
     if first then table.insert(pos, v.starts) end
 
     local delt = self.interval
