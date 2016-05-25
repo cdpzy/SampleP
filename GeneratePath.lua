@@ -65,38 +65,16 @@ else
 end
 
 print("working directory ", _M.savePathStr)
+_M.speedConfig = {
+    [1] = 100,   [2] = 80,  [3] = 100,  [4] = 110,  [5] = 120,
+    [6] = 90,   [7] = 130,  [8] = 120,  [9] = 90,  [10] = 50,
+    [11] = 70,  [12] = 80, [13] = 100, [14] = 80, [15] = 80,
+    [16] = 90,  [17] = 60, [18] = 60, [19] = 60, [20] = 50,
+    [21] = 70,  [22] = 60, [23] = 60, [24] = 50, [25] = 60,
+    [26] = 60,  [27] = 65, [28] = 65, [29] = 40, 
+}
 
 _M.configs = {
-    --[源配置文件] = {生成的配置文件, 生成的配置表名称}
-	-- ["pathconfig/fishpath_1_1"] = {"genPoint/fishpath_1_1.lua", "fishpath_1_1"},
- --    ["pathconfig/fishpath_2_1"] = {"genPoint/fishpath_2_1.lua", "fishpath_2_1"},
- --    ["pathconfig/fishpath_3_1"] = {"genPoint/fishpath_3_1.lua", "fishpath_3_1"},
- --    ["pathconfig/fishpath_4_1"] = {"genPoint/fishpath_4_1.lua", "fishpath_4_1"},
- --    ["pathconfig/fishpath_5_1"] = {"genPoint/fishpath_5_1.lua", "fishpath_5_1"},
- --    ["pathconfig/fishpath_6_1"] = {"genPoint/fishpath_6_1.lua", "fishpath_6_1"},
- --    ["pathconfig/fishpath_7_1"] = {"genPoint/fishpath_7_1.lua", "fishpath_7_1"},
- --    ["pathconfig/fishpath_8_1"] = {"genPoint/fishpath_8_1.lua", "fishpath_8_1"},
- --    ["pathconfig/fishpath_9_1"] = {"genPoint/fishpath_9_1.lua", "fishpath_9_1"},
- --    ["pathconfig/fishpath_10_1"] = {"genPoint/fishpath_10_1.lua", "fishpath_10_1"},
- --    ["pathconfig/fishpath_11_1"] = {"genPoint/fishpath_11_1.lua", "fishpath_11_1"},
- --    ["pathconfig/fishpath_12_1"] = {"genPoint/fishpath_12_1.lua", "fishpath_12_1"},
- --    ["pathconfig/fishpath_13_1"] = {"genPoint/fishpath_13_1.lua", "fishpath_13_1"},
- --    ["pathconfig/fishpath_14_1"] = {"genPoint/fishpath_14_1.lua", "fishpath_14_1"},
- --    ["pathconfig/fishpath_15_1"] = {"genPoint/fishpath_15_1.lua", "fishpath_15_1"},
- --    ["pathconfig/fishpath_16_1"] = {"genPoint/fishpath_16_1.lua", "fishpath_16_1"},
- --    ["pathconfig/fishpath_17_1"] = {"genPoint/fishpath_17_1.lua", "fishpath_17_1"},
- --    ["pathconfig/fishpath_18_1"] = {"genPoint/fishpath_18_1.lua", "fishpath_18_1"},
- --    ["pathconfig/fishpath_19_1"] = {"genPoint/fishpath_19_1.lua", "fishpath_19_1"},
- --    ["pathconfig/fishpath_20_1"] = {"genPoint/fishpath_20_1.lua", "fishpath_20_1"},
- --    ["pathconfig/fishpath_21_1"] = {"genPoint/fishpath_21_1.lua", "fishpath_21_1"},
- --    ["pathconfig/fishpath_22_1"] = {"genPoint/fishpath_22_1.lua", "fishpath_22_1"},
- --    ["pathconfig/fishpath_23_1"] = {"genPoint/fishpath_23_1.lua", "fishpath_23_1"},
- --    ["pathconfig/fishpath_24_1"] = {"genPoint/fishpath_24_1.lua", "fishpath_24_1"},
- --    ["pathconfig/fishpath_25_1"] = {"genPoint/fishpath_25_1.lua", "fishpath_25_1"},
- --    ["pathconfig/fishpath_26_1"] = {"genPoint/fishpath_26_1.lua", "fishpath_26_1"},
- --    ["pathconfig/fishpath_27_1"] = {"genPoint/fishpath_27_1.lua", "fishpath_27_1"}, 
- --    ["pathconfig/fishpath_28_1"] = {"genPoint/fishpath_28_1.lua", "fishpath_28_1"},
- --    ["pathconfig/fishpath_29_1"] = {"genPoint/fishpath_29_1.lua", "fishpath_29_1"}, 
 }
 
 function _M:makeConfigs()
@@ -113,7 +91,17 @@ function _M:makeConfigs()
             self.configs[string.format("pathconfig/%s", name)] = { string.format("genPoint/%s.lua", name), name}
         end
     end
+end
 
+function _M:getFishType(name)
+    local pos = string.find(name, '/')
+    name = string.sub(name, pos + 1, #name)
+    pos = string.find(name, "_")
+    name = string.sub(name, pos + 1, #name)
+    pos = string.find(name, "_")
+    name = string.sub(name, 1, pos - 1)
+
+    return math.ceil(tonumber(name))
 end
 
 function _M:build()
@@ -124,28 +112,33 @@ function _M:build()
     print("start processing  total ", #self.configs)
 
     local curCnt = 1
+    local fishType = nil
     for k,v in pairs(self.configs) do
         print("processing curCnt ", curCnt, k)
+
+        fishType = self:getFishType(k)
+        print("fish type is ", fishType)
+
         p = require(k)
-        self:parsePath(p, v)
+        self:parsePath(p, v, fishType)
         p = nil
         curCnt = curCnt + 1
         print("finished   ", k)
     end
 end
 
-function _M:parsePath(p, f)
+function _M:parsePath(p, f, fishType)
     local first = true
     local pos = {}
     local lastEnd = nil --计算的时候可能会有误差，保证连接在一起
     for _, v in pairs(p) do
         if 1 == v.t then
             if nil ~= lastEnd then v.starts = lastEnd end
-            self:buildBezier(v, pos, first)
+            self:buildBezier(v, pos, first, fishType)
             lastEnd = pos[#pos]
         elseif 2 == v.t then
             if nil ~= lastEnd then v.starts = lastEnd end
-            self:buildLinear(v, pos, first)
+            self:buildLinear(v, pos, first, fishType)
             lastEnd = pos[#pos]
         -- elseif 3 == v.t then
         --     self:buildCycle(v, pos, first)
@@ -179,9 +172,9 @@ function _M:savePath(pos, f)
     fh:close()
 end
 
-_M.bezierStep = 100
+_M.bezierStep = 150
 _M.simulateInterval = 2000
-function _M:getBezierDuraton(v, first)
+function _M:getBezierDuraton(v, first, fishType)
     local pos = {}
     if first then table.insert(pos, v.starts) end
     local bezier = BezierTo:new(self.simulateInterval,v)
@@ -197,12 +190,12 @@ function _M:getBezierDuraton(v, first)
         len = len + cc.pGetDistance(pos[i], pos [i - 1])
     end
 
-    return len / self.bezierStep
+    return len / self.speedConfig[fishType]
 end
 
 
-function _M:buildBezier(v, pos, first)
-    v.duration = self:getBezierDuraton(v, first)
+function _M:buildBezier(v, pos, first, fishType)
+    v.duration = self:getBezierDuraton(v, first, fishType)
 
     if first then table.insert(pos, v.starts) end
 
