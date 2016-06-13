@@ -3,10 +3,10 @@
               "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 
 <svg xmlns="http://www.w3.org/2000/svg"
-     width="17.7778in" height="10.5556in"
-     viewBox="0 0 1280 760">
+     width="17.7778in" height="10in"
+     viewBox="0 0 1280 720">
   <path id="未命名"
         fill="none" stroke="black" stroke-width="1"
-        d="M 1323.00,102.00
-           C 1429.31,179.71 351.55,503.29 198.00,793.00" />
+        d="M 1076.00,840.00
+           C 1076.00,840.00 243.00,-100.00 243.00,-100.00" />
 </svg>

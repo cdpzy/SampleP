@@ -2,6 +2,9 @@
 --根据配置生成鱼路径
 --ppp 2016-04-11
 
+
+local pathTimeConf = require("pathTimeConf")
+
 local BezierTo = {
 
 }
@@ -77,6 +80,43 @@ _M.speedConfig = {
 _M.configs = {
 }
 
+function _M:build()
+    self:makeConfigs()
+
+    print("start processing  total ", #self.configs)
+    local p = nil
+    local curCnt = 1
+    local fishType = nil
+    local pathID = nil
+    local totalTime = nil
+    local singleTime = nil
+    for k,v in pairs(self.configs) do
+        p = require(k)
+        fishType, pathID = self:getFishType(k)
+
+        if nil ~= pathTimeConf[fishType] then
+            totalTime = pathTimeConf[fishType][pathID]
+            print("====handling && total time", fishType, pathID)
+            
+
+            --assign duration equally.
+            singleTime = totalTime / #p
+            singleTime = string.format("%.02f", singleTime)
+            singleTime = tonumber(singleTime)
+            for _,s in ipairs(p) do
+                s.duration = singleTime
+            end
+        else
+            print("there is no time definition for fish ", fishType)
+        end
+
+        self:parsePath(p, v, fishType)
+        p = nil
+        curCnt = curCnt + 1
+        print("finished   ", k)
+    end
+end
+
 function _M:makeConfigs()
     self.configs = {}
 
@@ -90,40 +130,6 @@ function _M:makeConfigs()
             print (name)
             self.configs[string.format("pathconfig/%s", name)] = { string.format("genPoint/%s.lua", name), name}
         end
-    end
-end
-
-function _M:getFishType(name)
-    local pos = string.find(name, '/')
-    name = string.sub(name, pos + 1, #name)
-    pos = string.find(name, "_")
-    name = string.sub(name, pos + 1, #name)
-    pos = string.find(name, "_")
-    name = string.sub(name, 1, pos - 1)
-
-    return math.ceil(tonumber(name))
-end
-
-function _M:build()
-    local p = nil
-
-    self:makeConfigs()
-
-    print("start processing  total ", #self.configs)
-
-    local curCnt = 1
-    local fishType = nil
-    for k,v in pairs(self.configs) do
-        print("processing curCnt ", curCnt, k)
-
-        fishType = self:getFishType(k)
-        print("fish type is ", fishType)
-
-        p = require(k)
-        self:parsePath(p, v, fishType)
-        p = nil
-        curCnt = curCnt + 1
-        print("finished   ", k)
     end
 end
 
@@ -150,6 +156,19 @@ function _M:parsePath(p, f, fishType)
     end
 
     self:savePath(pos, f)
+end
+
+function _M:getFishType(name)
+    local str = name
+    local pos = string.find(str, '/')
+    str = string.sub(str, pos + 1, #str)
+    pos = string.find(str, "_")
+    str = string.sub(str, pos + 1, #str)
+    pos = string.find(str, "_")
+    local ft = string.sub(str, 1, pos - 1)
+    local pt = string.sub(str, pos + 1, #str)
+    print("==========getFishType===========", ft, pt)
+    return math.ceil(tonumber(ft)), math.ceil(tonumber(pt))
 end
 
 function _M:savePath(pos, f)
@@ -195,7 +214,7 @@ end
 
 
 function _M:buildBezier(v, pos, first, fishType)
-    v.duration = self:getBezierDuraton(v, first, fishType)
+    --v.duration = self:getBezierDuraton(v, first, fishType)
 
     if first then table.insert(pos, v.starts) end
 
