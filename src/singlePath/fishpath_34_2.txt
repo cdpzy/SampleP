@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+              "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="17.7778in" height="10in"
+     viewBox="0 0 1280 720">
+  <path id="未命名"
+        fill="none" stroke="black" stroke-width="1"
+        d="M 776.00,-196.00
+           C 617.33,5.33 204.76,248.49 474.67,445.33
+             808.00,670.67 1157.33,676.00 1277.33,860.00" />
+</svg>
