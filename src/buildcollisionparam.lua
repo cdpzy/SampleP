@@ -84,6 +84,14 @@ end
 
 local FishConf = {
   {
+    name = "fish_34",
+    size= {247, 270},
+    ellipse = { --width, height, posx, posy
+      {332,114,0,0},
+      {332,114,0,89},
+    },
+  },
+  {
     name = "fish_33",
     size= {247, 270},
     ellipse = { --width, height, posx, posy
