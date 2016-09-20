@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+              "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="17.7778in" height="10in"
+     viewBox="0 0 1280 720">
+  <path id="fish_32_5"
+        fill="none" stroke="black" stroke-width="1"
+        d="M 1320.00,-197.33
+           C 1317.33,-21.33 1212.00,586.67 793.33,412.00
+             485.10,254.73 405.33,334.67 270.67,436.00
+             -85.33,702.67 -137.33,284.00 -137.33,284.00" />
+</svg>
